@@ -5,9 +5,10 @@ exports.Parsing = function (tokens) {
     var cur = tokens[0];
     var next = tokens[1];
     var pos = 2;
+    var endToken = { type: type_1.TokenType.EOF, input: '' };
     var nextToken = function () {
         cur = next;
-        next = tokens.length > pos ? tokens[pos] : { type: type_1.TokenType.EOF, input: '' };
+        next = tokens.length > pos ? tokens[pos] : endToken;
         pos++;
     };
     var getNum = function () {
@@ -23,11 +24,7 @@ exports.Parsing = function (tokens) {
                 return "break";
             nextToken();
             var rchild = getNum();
-            lchild = {
-                operator: t.type,
-                lchild: lchild,
-                rchild: rchild
-            };
+            lchild = { operator: t.type, lchild: lchild, rchild: rchild };
         };
         while (true) {
             var state_1 = _loop_1();
@@ -44,11 +41,7 @@ exports.Parsing = function (tokens) {
                 return "break";
             nextToken();
             var rchild = muldiv();
-            lchild = {
-                operator: t.type,
-                lchild: lchild,
-                rchild: rchild
-            };
+            lchild = { operator: t.type, lchild: lchild, rchild: rchild };
         };
         while (true) {
             var state_2 = _loop_2();

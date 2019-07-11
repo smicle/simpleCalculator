@@ -5,9 +5,11 @@ export const Parsing = (tokens: Token[]): Node => {
   let next: Token = tokens[1]
   let pos: number = 2
 
+  const endToken = {type: TokenType.EOF, input: ''}
+
   const nextToken = (): void => {
     cur = next
-    next = tokens.length > pos ? tokens[pos] : {type: TokenType.EOF, input: ''}
+    next = tokens.length > pos ? tokens[pos] : endToken
     pos++
   }
 
@@ -23,15 +25,9 @@ export const Parsing = (tokens: Token[]): Node => {
     while (true) {
       const t: Token = cur
       if ([TokenType.MULTIPLE, TokenType.DIVISION].every(v => t.type !== v)) break
-
       nextToken()
-
       const rchild: Node = getNum()
-      lchild = {
-        operator: t.type,
-        lchild: lchild,
-        rchild: rchild,
-      }
+      lchild = {operator: t.type, lchild: lchild, rchild: rchild}
     }
 
     return lchild
@@ -43,15 +39,9 @@ export const Parsing = (tokens: Token[]): Node => {
     while (true) {
       const t: Token = cur
       if ([TokenType.PLUS, TokenType.MINUS].every(v => t.type !== v)) break
-
       nextToken()
-
       const rchild: Node = muldiv()
-      lchild = {
-        operator: t.type,
-        lchild: lchild,
-        rchild: rchild,
-      }
+      lchild = {operator: t.type, lchild: lchild, rchild: rchild}
     }
 
     return lchild

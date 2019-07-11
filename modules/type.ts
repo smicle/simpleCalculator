@@ -12,10 +12,10 @@ export type Token = {
   input: string
 }
 
-export type Node = Operator | number
-
-export type Operator = {
+export interface Operator {
   operator: TokenType
   lchild: Node
   rchild: Node
 }
+
+export type Node = Operator | number
